@@ -132,9 +132,9 @@ async def show_ranking(
     stats_for_new_command_request(interaction)
 
 @command_tree.command(name="help")
-async def show_help_documentation(interaction: Interaction, ephemeral: bool = True):
+async def show_help_documentation(interaction: Interaction, location: str = "1", ephemeral: bool = True):
     await interaction.response.defer(thinking=True, ephemeral=ephemeral)
-    await interaction.edit_original_response(view=await ui.build_help_ui())
+    await interaction.edit_original_response(view=await ui.build_help_ui(location))
 
     stats_for_new_command_request(interaction)
 

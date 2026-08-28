@@ -9,3 +9,7 @@ A discord bot that provides a better gaming experience for Slay.one players.
 3. Replay saving.
 4. External Slay.one ranking.
 5. Monitoring Slay.one resource update (for dev).
+
+# Links
+Kbps User Documentation: https://flashxwx.github.io/kbps/
+Discord Server for Slay.one 3rd Party Devs: https://discord.com/invite/DV8df6c3dr

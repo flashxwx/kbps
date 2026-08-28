@@ -30,56 +30,67 @@ class BackToLastUIButton(ui.Button):
     
 
 async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
-    layout_view = ui.MyLayoutView()
-    container = ui.Container()
-    splited_location = location.split("-")
-    section = None
-    sub_section = help_doc
-    index = 1
-    error_message = ""
-
-    top_buttons = ui.ActionRow(ui.Button(label="View on Website", url="https://slay.one"))
-    if last_ui_stuff:
-        top_buttons.add_item(BackToLastUIButton(last_ui_stuff))
-
     if location[0] == "p":
         need_pin = True
         location = location[1:]
     else:
         need_pin = False
 
+    layout_view = ui.MyLayoutView()
+    container = ui.Container()
+    splited_location = location.split("-")
+
+    section = help_doc
+    sub_section = help_doc
+    index = 1
+    error_message = ""
+
+    top_buttons = ui.ActionRow(ui.Button(label="View on Website", url="https://flashxwx.github.io/kbps/"))
+    if last_ui_stuff:
+        top_buttons.add_item(BackToLastUIButton(last_ui_stuff))
+
+    container.add_item(top_buttons)
+
     for index_str in splited_location:
         if not index_str:
-            error_message = f"Incorrect Location Format: \"{location}\". Index cannot be empty."
+            error_message = f"Incorrect Location Format - \"{location}\". Index cannot be empty."
             break
 
         try:
-            index = int(index_str)
+            index = int(index_str)-1
         except:
-            error_message = f"Incorrect Location Format: \"{location}\". Index must be number."
+            error_message = f"Incorrect Location Format - \"{location}\". Index must be number."
             break
+
+        old_section = section
 
         try:
             if not sub_section:
-                error_message = f"Location Not Exists: \"{location}\"."
+                error_message = f"Location Not Exists - \"{location}\"."
 
             section = sub_section
             sub_section = section[index].get("more", None)
-        except FileNotFoundError:
-            ...
+        except TypeError:
+            error_message = f"Location Not Exists - \"{location}\"."
+            section = old_section
 
     if error_message:
-        layout_view.add_item(ui.Container(ui.TextDisplay(error_message)))
+        layout_view.add_item(ui.Container(ui.TextDisplay("Error: " + error_message)))
 
     if need_pin:
-        main_data = section[index]["main"]
+        content = ""
+        data = section[index]
+        main_data = data["main"]
         if isinstance(main_data, list):
             for line in main_data:
                 content += line + "\n"
         else:
             content += main_data + "\n"
 
-        container.add_item(ui.Section(content, accessory=NagivationButton()))
+        if data.get("more"):
+            container.add_item(ui.Section(content, accessory=NagivationButton(location+"-"+str(i))))
+        else:
+            container.add_item(ui.TextDisplay(content))
 
     for i, data in enumerate(section):
         if need_pin and i == index:
