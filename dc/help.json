@@ -1,0 +1,44 @@
+[
+    {
+        "main": [
+            "### 1. How to check the activty in Slay.one currently?",
+            "Use `/current` command to get every server activity. (matches, real player count, top players of each match, ranked search count)"
+        ]
+    },
+    {
+        "main": [
+            "### 2. How to see the chart of the peak activity of Slay.one?",
+            "Use `/peak` command to get peak activity chart of Slay.one, you can also modify a bit the chart based on your need."
+        ]
+    },
+    {
+        "main": [
+            "### 3. How to get notified when people are playing Slay.one?",
+            "Use `/radio` command to manage the switch of radio for you, radio can work in DMs or voice channel."
+        ]
+    },
+    {
+        "main": [
+            "### 4. How to get the recent replays of public Slay.one matches?",
+            "Use `/replay` command to view and get the recent replays of public games."
+        ]
+    },
+    {
+        "main": [
+            "### 5. How to see the ranking?",
+            "Use `/ranking` command to see all the rankings."
+        ]
+    },
+    {
+        "main": [
+            "### 6. How to see ranked player information(scores, ranks, recent logs etc)?",
+            "Use `playerrank` to search and view ranked player information."
+        ]
+    },
+    {
+        "main": [
+            "### 7. How to see ranked clan information(scores, ranks, recent logs etc)?",
+            "Use `playerrank` to search and view ranked clan information."
+        ]
+    }
+]

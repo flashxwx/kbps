@@ -1,0 +1,14 @@
+BOT COMMANDS:
+c
+sync_commands
+shutdown_safely
+restart_safely
+
+RASP COMMANDS:
+systemctl restart kbps
+vcgencmd measure_temp
+tail -n 10 .log
+ps -eLf | grep python3 | wc -l
+sudo py-spy top --pid [pid]
+df -h
+journalctl -u kbps --since "7 days ago"
