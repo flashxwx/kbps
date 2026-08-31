@@ -1,0 +1,208 @@
+[
+    {
+        "main": [
+            "### 1. Introduction",
+            "Kbps is a discord bot project for Slay.one, the purpose of it is improving gaming experience for players for free.",
+            "Here is the link of the project source codes - https://github.com/flashxwx/kbps"
+        ]
+    },
+    {
+        "main": [
+            "### 2. Current activity",
+            "Use `/current` command to get every server activity. (matches, real player count, top players of each match, ranked search count)"
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. How the bot collect player activity data in Slay.one?",
+                    "The bot has a program that try to get a list of every public game rooms every 60 seconds; \\",
+                    "And the program will manage to join each game room to watch the player activity in real time.",
+                    "The program also listen to the change of search of 1v1 ranked match."
+                ]
+            }
+        ]
+    },
+    {
+        "main": [
+            "### 3. Peak activity chart",
+            "Use `/peak` command to get peak activity chart of Slay.one, you can also modify a bit the chart based on your need."
+        ]
+    },
+    {
+        "main": [
+            "### 4. Notification of player activity",
+            "Use `/radio` command to manage the switch of radio for you, radio can work in DMs or voice channel. \\",
+            "We got radio in voice and in DMs, both are off in default, you got to turn on them through buttons on `/radio` UI."
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. How does the radio work in DMs",
+                    "After turning on radio in DMs, the bot will send you a brief report \\",
+                    "once there is any positive change of player activity every 30 seconds. \\",
+                    " And the brief report will include the activty information of all servers.",
+                    "There will also be a turning off button following with the brief report for your conveniece."
+                ]
+            },
+            {
+                "main": [
+                    "### 2. How does the radio work in Voice",
+                    "After turning on radio in Voice, the bot will try to join the voice channel which you are in. \\",
+                    "And, it will read out the brief report of any positive change of player activity every 30 seconds in voice channel. \\",
+                    "Same as radio in DMs, the brief report will include the activty information of all servers."
+                ]
+            },
+            {
+                "main": [
+                    "### 3. Example of brief report",
+                    "`Currently, there are 0 people searching for 1v1 ranked match in Server of Europe\n\\",
+                    "and there are 0 people searching for 1v1 ranked match in Server of America\n\\",
+                    "and there are 0 people searching for 1v1 ranked match in Server of Asia\n\\",
+                    "and there are 3 people playing in Server of Europe\n\\",
+                    "and there are 0 people playing in Server of America\n\\",
+                    "and there are 0 people playing in Server of Asia`"
+                ]
+            }
+        ]
+    },
+    {
+        "main": [
+            "### 5. Replays of public games of Slay.one",
+            "Use `/replay` command to view and get the recent replays of public games."
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. How does the bot save replays?",
+                    "The bot will watch every public games, and collect the data, and save all the game data as replay file. \\",
+                    "It will also save a list of players that have played in those games and some related information, so you can find out the replay you want quicker."
+                ]
+            },
+            {
+                "main": [
+                    "### 2. Limit of the space of replay saving",
+                    "Currently, the maximum of the space is 5GB, which can almost save all the replay files in 4 weeks. \\",
+                    "It will clean up the oldest replay once it has reach the limit of the space."
+                ]
+            }
+        ]
+    },
+    {
+        "main": [
+            "### 6. External ranking for deathmatch",
+            "Use `/ranking` command to see all the rankings. Only show the first 1000 results, \\",
+            "you will have to use `/rankedplayer` or `/rankedclan` to check ranks of others."
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. How does the ranking system work?",
+                    "The system will watch all the public deathmatch, and then make out an in-game ranking base on player kills. \\",
+                    "And, it will calculate the win and lost of ELO scores of players at the end of every game round.",
+                    "The calculation based on these criterias:\n\\",
+                    "- Game duration\n- Players' gaming duration\n- In-game rank of you and your opponent (the larger gap of in-game ranks, the smaller impact)\n\\",
+                    "- ELO score of you and your opponent (the larger gap of ELO scores, the bigger impact)\n\\",
+                    "- Count of the match you and your opponent have played in all time (bigger change of ELO score between newbies)"
+                ]
+            },
+            {
+                "main": [
+                    "### 2. Counting kills (in deathmatch)",
+                    "There are two types of kills defined in the system: **Kills** & **Bot kills**. \\",
+                    "**Kills** include kills from guest account and player account; **Bot kills** include kills from bots and zombies.",
+                    "To avoid players deliberately suicide from getting killed by others, \\",
+                    "the system will give kill to the player that deal damage to player who suicided in the last 5 seconds. Suicide includes deaths cause by self, bots, or zombies."
+                ]
+            },
+            {
+                "main": [
+                    "### 3. Counting duration (in deathmatch)",
+                    "The gaming duration of a player is counted from the time they first join a game round until the end of the round. \\",
+                    "Gaming duration does NOT include death duration and leaving duration."
+                ]
+            },
+            {
+                "main": [
+                    "### 4. Clan ELO score",
+                    "Clan ELO score is from ELO score that the members (who's played over 10 matches) won or lost from deathmatch. \\",
+                    "The ELO score that a member won will be added to clan ELO addend; \\",
+                    "The ELO score that a member lost will be added to clan ELO subtrahend. \\",
+                    "Players can contribute more to clan as their ELO score increases, \\",
+                    "with a bonus contribution every 100 above 1000 ELO points.",
+                    "The change of clan ELO score will be caculated based on ELO addend, ELO subtrahend and the member count at that time."
+                ]
+            },
+            {
+                "main": [
+                    "### 5. Seasons of ranking",
+                    "Every quarter of year is a ranking season. ELO scores of players and clans will be compressed in new season; \\",
+                    "The higher score, the more compression.",
+                    "In new season, player kills and bot kills will be reset, same thing happen to clan ELO addend and subtrahend. \\",
+                    "Note that the match played count of players will not be reset."
+                ]
+            },
+            {
+                "main": [
+                    "### 6. Why didn't I find myself/others on ranking?",
+                    "Possible reason 1: You haven't played at least one deathmatch since the ranking system started working.",
+                    "Possible reason 2: You used the wrong server or season filter to find."
+                ]
+            },
+            {
+                "main": [
+                    "### 7. How do I avoid being ranked",
+                    "For now, there's no way to make a switch for players to decide this, because of this isn't official ranking. \\",
+                    "You can choose to use guest account or alternate account to avoid your main account ELO score getting changed."
+                ]
+            },
+            {
+                "main": [
+                    "### 8. Formulas",
+                    "Check out the python functions of formulas here: https://github.com/flashxwx/kbps/blob/main/slayone/ranking.py#L295"
+                ]
+            }
+        ]
+    },
+    {
+        "main": [
+            "### 7. Ranked player information",
+            "Use `rankedplayer` to search and view ranked player information (scores, ranks, recent logs etc)."
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. Why didn't I find a player?",
+                    "Possible reason 1: You haven't played at least one deathmatch since the ranking system started working.",
+                    "Possible reason 2: You used the wrong ID, nickname, or the filter of server and season to find."
+                ]
+            },
+            {
+                "main": [
+                    "### 2. Search suggestion",
+                    "Input at least 3 characters, and make sure it's as accurate as possible."
+                ]
+            }
+        ]
+    },
+    {
+        "main": [
+            "### 8. Ranked clan information",
+            "Use `rankedclan` to search and view ranked clan information (scores, ranks, recent logs etc)."
+        ],
+        "more": [
+            {
+                "main": [
+                    "### 1. Why didn't I find a clan?",
+                    "Possible reason 1: No one clan member had played over 10 matches since the ranking system started working.",
+                    "Possible reason 2: You used the wrong clan-tag or the filter of server and season to find."
+                ]
+            },
+            {
+                "main": [
+                    "### 2. Search suggestion",
+                    "Input at least 3 characters, and make sure it's as accurate as possible."
+                ]
+            }
+        ]
+    }
+]

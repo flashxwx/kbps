@@ -6,7 +6,7 @@ from discord.app_commands import CommandTree, AppCommandError
 
 from dc import bot
 from dc.command import command_tree, get_stats_for_command_request
-
+from dc.ui.help import load_help_doc
 from dc.error import handle_interaction_error
 from slayone.watcher import watching_game_room_id_set_of_each_server
 
@@ -26,7 +26,8 @@ async def use_admin_power(
         ".status",
         ".safely_shutdown",
         ".safely_restart",
-        ".command_stats"
+        ".command_stats",
+        ".load_help_docs"
     ] = None
 ):
     terminal_command = ""
@@ -40,6 +41,9 @@ async def use_admin_power(
         spell = ".command_draft"
 
     match spell:
+        case ".load_help_docs":
+            load_help_doc()
+            response_message = "Loaded help docs."
         case ".command_stats":
             response_message = get_stats_for_command_request()
         case ".status":

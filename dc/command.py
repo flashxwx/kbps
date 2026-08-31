@@ -34,8 +34,15 @@ def get_stats_for_command_request():
 async def on_error(interaction: Interaction, error: AppCommandError):
     await handle_interaction_error(interaction, error)
 
-@command_tree.command(name="clanrank")
+@command_tree.command(name="rankedclan", description="View the information of a ranked clan.")
 # @app_commands.guilds(1120432082846486638, 1443569912017715214)
+@app_commands.describe(
+    clan_tag="An exact clan tag. Example: BNQ",
+    search_clan_tag="A clan tag you want to use to search for a ranked clan. Example: bnq",
+    server="A slay.one server name (lowercase). Example: eu",
+    season="A season name (uppercase). Example: S2026Q3",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 @choices(
     server=[
         Choice(name="eu", value="EU"),
@@ -66,8 +73,15 @@ async def show_clan_rank(
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="playerrank")
+@command_tree.command(name="rankedplayer", description="View the information of a ranked player.")
 # @app_commands.guilds(1120432082846486638, 1443569912017715214)
+@app_commands.describe(
+    player_id="An exact player ID. Example: 1562079",
+    nickname="A nickname you want to use to search for a ranked player. Example: flAs",
+    server="A slay.one server name (lowercase). Example: eu",
+    season="A season name (upppercase). Example: S2026Q3",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 @choices(
     server=[
         Choice(name="eu", value="EU"),
@@ -100,8 +114,14 @@ async def show_player_rank(
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="ranking")
+@command_tree.command(name="ranking", description="Check out the external ranking.")
 # @app_commands.guilds(1120432082846486638, 1443569912017715214)
+@app_commands.describe(
+    server="A slay.one server name (lowercase). Example: eu",
+    type="An index name of ranking type. Example: dm_player_elo",
+    season="A season name (uppercase). Example: S2026Q3",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 @choices(
     server=[
         Choice(name="eu", value="EU"),
@@ -119,26 +139,31 @@ async def show_ranking(
     interaction: Interaction,
     server: str = "EU",
     type: int = 1,
-    season_id: str = None,
+    season: str = None,
     ephemeral: bool = True
 ):
     await interaction.response.defer(thinking=True, ephemeral=ephemeral)
     await interaction.edit_original_response(
         view=await ui.build_slay_ranking_ui(
-            ui.SlayRankingUIInfo(server, type, season_id)
+            ui.SlayRankingUIInfo(server, type, season)
         )
     )
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="help")
+@command_tree.command(name="help", description="Read to know how to use this bot, and more related informatin.")
+@app_commands.describe(
+    location="Location query text. Example: 1-1",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 async def show_help_documentation(interaction: Interaction, location: str = "1", ephemeral: bool = True):
     await interaction.response.defer(thinking=True, ephemeral=ephemeral)
     await interaction.edit_original_response(view=await ui.build_help_ui(location))
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="current")
+@command_tree.command(name="current", description="View the current activity of Slay.one")
+@app_commands.describe(ephemeral="The response is visible to you only if True, else visible to everyone, default is True.")
 async def show_slay_current_activity(
     interaction: Interaction, ephemeral: bool = True
 ):
@@ -147,7 +172,19 @@ async def show_slay_current_activity(
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="peak")
+@command_tree.command(name="peak", description="View the peak activity chart of Slay.one")
+@app_commands.describe(
+    timezone="Timezone of the chart, default is UTC+0.",
+    time_unit="Time unit of the chart, default is hour.",
+    server="Server to show on the chart, default is all servers.",
+    past_years="How many past years from now, default is 0.",
+    past_months="How many past months from now, default is 0.",
+    past_weeks="How many past weeks from now, default is 0.",
+    past_days="How many past days from now, default is 1.",
+    past_hours="How many past hours from now, default is 0.",
+    no_dots="No dots in chart if True, default is False.",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 @choices(
     timezone=[
         Choice(name="-11 (American Samoa)", value=-11.0),
@@ -223,7 +260,11 @@ async def show_peak_chart(
 
     stats_for_new_command_request(interaction)
 
-@command_tree.command(name="radio")
+@command_tree.command(name="radio", description="Configure the notification of slay.one player acitivty.")
+@app_commands.describe(
+    voice="Enable voice notification if True, default is False",
+    dms="Enable text notification in DMs if True, default is False."
+)
 async def interact_with_slay_radio(
     interaction: ui.Interaction, voice: bool = False, dms: bool = None, ephemeral: bool = True
 ):
@@ -235,6 +276,12 @@ async def interact_with_slay_radio(
 
 
 @command_tree.command(name="replay")
+@app_commands.describe(
+    server="Server index name for replay filter, default is all.",
+    mode="Mode index name for replay filter, default is all.",
+    replay_id="The exact replay ID for viewing a replay directly.",
+    ephemeral="The response is visible to you only if True, else visible to everyone, default is True."
+)
 @choices(
     server=[
         Choice(name="all", value="SERVER_INDEX IN (0, 1, 2)"),

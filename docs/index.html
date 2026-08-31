@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kbps User Documentation</title>
+<title>Kbps Help Documentation</title>
 <style>
   :root{
     --bg:#ffffff;
@@ -128,6 +128,21 @@
   .doc-title{margin:0 0 10px;font-size:16px;line-height:1.75;}
   .doc-title > :first-child{margin-top:0;}
   .doc-title .title-link-btn{vertical-align:middle;margin-left:4px;}
+  .markdown-body .title-link-btn{
+    vertical-align:middle;
+    margin-left:6px;
+    padding:2px 4px;
+    opacity:0;
+  }
+  .markdown-body h1:hover .title-link-btn,
+  .markdown-body h2:hover .title-link-btn,
+  .markdown-body h3:hover .title-link-btn,
+  .markdown-body h4:hover .title-link-btn,
+  .markdown-body h5:hover .title-link-btn,
+  .markdown-body h6:hover .title-link-btn{
+    opacity:.55;
+  }
+  .markdown-body .title-link-btn:hover{opacity:1 !important;}
   .main-block{font-size:16px;line-height:1.75;color:var(--text);margin:8px 0;}
   .main-block-0{margin-top:0;}
   .main-block h1,.main-block h2,.main-block h3,.main-block h4,.main-block h5,.main-block h6{line-height:1.35;}
@@ -145,7 +160,7 @@
   .overview-list{display:flex;flex-direction:column;gap:10px;}
   .overview-card{
     display:block;padding:16px 18px;border:1px solid var(--border);border-radius:8px;
-    text-decoration:none;transition:border-color .15s,box-shadow .15s;
+    text-decoration:none;transition:border-color .15s,box-shadow .15s;cursor:pointer;
   }
   .overview-card:hover{border-color:var(--accent);box-shadow:0 1px 8px rgba(0,0,0,0.05);}
   .overview-card-title{font-size:16px;font-weight:600;}
@@ -159,7 +174,7 @@
 
   .section-list{display:flex;flex-direction:column;gap:10px;margin-top:28px;}
   .section-list-label{font-size:13px;color:var(--text-secondary);margin-bottom:2px;}
-  .section-card{display:block;padding:16px 18px;border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s,box-shadow .15s;background:#fff;}
+  .section-card{display:block;padding:16px 18px;border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s,box-shadow .15s;background:#fff;cursor:pointer;}
   .section-card:hover{border-color:var(--accent);box-shadow:0 1px 8px rgba(0,0,0,0.05);}
   .section-card-title{font-size:16px;font-weight:600;}
   .section-card-desc{font-size:14px;color:var(--text-secondary);margin-top:4px;line-height:1.6;}
@@ -171,12 +186,17 @@
   .search-header h1{font-size:26px;margin:0 0 6px;}
   .search-header p{color:var(--text-secondary);font-size:14px;margin:0;}
   .search-results{display:flex;flex-direction:column;gap:18px;}
-  .search-result{display:block;padding:16px 18px;border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s,box-shadow .15s;background:#fff;}
+  .search-result{display:block;padding:16px 18px;border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s,box-shadow .15s;background:#fff;cursor:pointer;}
   .search-result:hover{border-color:var(--accent);box-shadow:0 1px 8px rgba(0,0,0,0.05);}
   .search-result-title{font-size:17px;font-weight:600;color:var(--accent);margin-bottom:5px;}
   .search-result-title p{margin:0;}
   .search-result-title h1,.search-result-title h2,.search-result-title h3,.search-result-title h4,.search-result-title h5,.search-result-title h6{margin:0 0 4px;}
-  .search-result-path{font-size:12px;color:var(--text-secondary);margin-bottom:9px;}
+  .search-result-path{font-size:12px;color:var(--text-secondary);margin-bottom:9px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .search-path-part{font-size:12px;line-height:1.2;color:var(--text-secondary);}
+  .search-path-part p{display:inline;margin:0;}
+  .search-path-part h1,.search-path-part h2,.search-path-part h3,.search-path-part h4,.search-path-part h5,.search-path-part h6{display:inline;margin:0;font-size:inherit;line-height:inherit;font-weight:inherit;}
+  .search-path-part ul,.search-path-part ol,.search-path-part blockquote,.search-path-part pre,.search-path-part table,.search-path-part hr{display:none;}
+  .search-path-sep{color:#c7cbd1;}
   .search-result-excerpt{font-size:14px;color:var(--text);line-height:1.7;margin:0;}
   .search-result-excerpt p{margin:0 0 6px;}
   .search-result-excerpt p:last-child{margin-bottom:0;}
@@ -273,7 +293,7 @@
 
 <header>
   <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
-  <a class="brand" href="#" id="homeBtn" aria-label="Go to home">Kbps User Documentation</a>
+  <a class="brand" href="#" id="homeBtn" aria-label="Go to home">Kbps Help Documentation</a>
   <div class="search-wrap">
     <input id="searchInput" type="text" placeholder="Search docs… (press / to focus)" autocomplete="off">
   </div>
@@ -356,8 +376,31 @@
   /* ===================== Data helpers ===================== */
   function normalizeMain(node){
     if(!node || node.main === undefined || node.main === null) return [];
-    if(Array.isArray(node.main)) return node.main.map(function(part){ return String(part); });
-    return [String(node.main)];
+    var parts = Array.isArray(node.main) ? node.main.map(function(part){ return String(part); }) : [String(node.main)];
+    if(parts.length <= 1) return parts;
+
+    // A trailing backslash on a block means "continue on the same line".
+    // The backslash is a control marker and is not rendered.
+    var merged = [];
+    var buffer = '';
+    parts.forEach(function(part){
+      if(buffer !== ''){
+        buffer += part;
+      }else{
+        buffer = part;
+      }
+
+      if(/\\$/.test(buffer)){
+        buffer = buffer.slice(0, -1);
+        return;
+      }
+
+      merged.push(buffer);
+      buffer = '';
+    });
+
+    if(buffer !== '') merged.push(buffer);
+    return merged;
   }
   function normalizeTitle(node){
     var parts = normalizeMain(node);
@@ -554,43 +597,117 @@
     return markdownToHtml(text);
   }
 
-  function markdownDisplayHighlighted(text){
-    var html = markdownToHtml(text);
-    if(!searchQuery) return html;
-    var q = escapeRegExp(searchQuery);
+  function highlightHtml(html){
+    if(!searchQuery || !html) return html;
+    var q = String(searchQuery);
     if(!q) return html;
-    try{
-      var re = new RegExp(q, 'ig');
-      // Highlight only text nodes in the generated HTML, never HTML tags/attributes.
-      return html.split(/(<[^>]*>)/g).map(function(part){
-        if(/^<[^>]*>$/.test(part)) return part;
-        return part.replace(re, function(m){ return '<mark>' + m + '</mark>'; });
-      }).join('');
-    }catch(e){
-      return html;
-    }
+    var root = document.createElement('div');
+    root.innerHTML = html;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    var lowerQ = q.toLowerCase();
+    nodes.forEach(function(node){
+      var text = node.nodeValue || '';
+      var lower = text.toLowerCase();
+      var pos = 0;
+      var frag = null;
+      while(true){
+        var idx = lower.indexOf(lowerQ, pos);
+        if(idx === -1) break;
+        if(!frag) frag = document.createDocumentFragment();
+        if(idx > pos) frag.appendChild(document.createTextNode(text.slice(pos, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.slice(idx, idx + q.length);
+        frag.appendChild(mark);
+        pos = idx + q.length;
+      }
+      if(frag){
+        if(pos < text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
+        node.parentNode.replaceChild(frag, node);
+      }
+    });
+    return root.innerHTML;
   }
 
-  function makeExcerpt(text, query, maxLen){
-    text = String(text || '').trim();
-    query = String(query || '').trim();
-    maxLen = maxLen || 220;
-    if(!text) return '';
-    if(!query) return text.length > maxLen ? text.slice(0, maxLen).trim() + '…' : text;
+  function markdownDisplay(text){
+    return markdownToHtml(text);
+  }
 
-    var lowerText = text.toLowerCase();
-    var lowerQuery = query.toLowerCase();
-    var idx = lowerText.indexOf(lowerQuery);
-    if(idx === -1) return text.length > maxLen ? text.slice(0, maxLen).trim() + '…' : text;
+  function markdownDisplayHighlighted(text){
+    return highlightHtml(markdownToHtml(text));
+  }
 
-    var contextBefore = 85;
-    var contextAfter = maxLen - contextBefore - query.length;
-    var start = Math.max(0, idx - contextBefore);
-    var end = Math.min(text.length, idx + query.length + Math.max(85, contextAfter));
-    var excerpt = text.slice(start, end).trim();
-    if(start > 0) excerpt = '…' + excerpt;
-    if(end < text.length) excerpt += '…';
-    return excerpt;
+  // Build an excerpt from rendered Markdown while preserving its inline/block markup.
+  // The range is selected in textContent, then cloned from the rendered DOM so links,
+  // emphasis, code, etc. remain valid HTML in the search result.
+  function makeMarkdownExcerpt(markdown, query, maxLen){
+    markdown = String(markdown || '');
+    query = String(query || '');
+    maxLen = maxLen || 280;
+    var rendered = markdownToHtml(markdown);
+    if(!rendered) return '';
+    if(!query) return rendered;
+
+    var root = document.createElement('div');
+    root.innerHTML = rendered;
+    var fullText = (root.textContent || '').replace(/\s+/g, ' ').trim();
+    var normalizedQuery = query.replace(/\s+/g, ' ').trim();
+    var lowerFull = fullText.toLowerCase();
+    var lowerQuery = normalizedQuery.toLowerCase();
+    var idx = lowerFull.indexOf(lowerQuery);
+
+    if(idx === -1){
+      return rendered;
+    }
+
+    var before = Math.max(70, Math.floor((maxLen - normalizedQuery.length) * 0.45));
+    var after = Math.max(80, maxLen - normalizedQuery.length - before);
+    var start = Math.max(0, idx - before);
+    var end = Math.min(fullText.length, idx + normalizedQuery.length + after);
+
+    // Map normalized text positions back to DOM text-node offsets.
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var textNodes = [];
+    var cumulative = 0;
+    while(walker.nextNode()){
+      var node = walker.currentNode;
+      var raw = node.nodeValue || '';
+      var normalized = raw.replace(/\s+/g, ' ');
+      textNodes.push({node: node, start: cumulative, end: cumulative + normalized.length});
+      cumulative += normalized.length;
+    }
+
+    function locate(position, isEnd){
+      for(var i=0;i<textNodes.length;i++){
+        var item = textNodes[i];
+        if(position <= item.end && (position >= item.start || (isEnd && position === item.end))){
+          var raw = item.node.nodeValue || '';
+          var offset = Math.min(raw.length, Math.max(0, position - item.start));
+          return {node:item.node, offset:offset};
+        }
+      }
+      if(textNodes.length){
+        var last = textNodes[textNodes.length - 1];
+        return {node:last.node, offset:(last.node.nodeValue || '').length};
+      }
+      return null;
+    }
+
+    var startPoint = locate(start, false);
+    var endPoint = locate(end, true);
+    if(!startPoint || !endPoint) return rendered;
+
+    var range = document.createRange();
+    range.setStart(startPoint.node, startPoint.offset);
+    range.setEnd(endPoint.node, endPoint.offset);
+    var fragment = range.cloneContents();
+
+    var wrapper = document.createElement('div');
+    wrapper.appendChild(fragment);
+    if(start > 0) wrapper.insertBefore(document.createTextNode('…'), wrapper.firstChild);
+    if(end < fullText.length) wrapper.appendChild(document.createTextNode('…'));
+    return wrapper.innerHTML;
   }
 
   function getMainBlocks(node){
@@ -602,33 +719,62 @@
   }
 
   function collectSearchResults(nodes, parentPath, q, results){
+    var normalizedQ = String(q || '').replace(/\s+/g, ' ').trim();
     nodes.forEach(function(node, i){
       var path = parentPath.concat([i+1]);
       var parts = getMainBlocks(node);
       var title = parts.length ? parts[0] : '(untitled)';
-      var plainParts = parts.map(markdownToText);
-      var searchable = plainParts.join(' ');
+      var plainParts = parts.map(function(part){
+        return markdownToText(part).replace(/\s+/g, ' ').trim();
+      });
+      var searchable = plainParts.join(' ').replace(/\s+/g, ' ').trim();
       var searchableLower = searchable.toLowerCase();
-      var titleMatch = plainParts.length ? plainParts[0].toLowerCase().indexOf(q) !== -1 : false;
-      var bodyMatch = false;
-      var matchingBlock = '';
+      var qLower = normalizedQ.toLowerCase();
+      var titleMatch = plainParts.length ? plainParts[0].toLowerCase().indexOf(qLower) !== -1 : false;
+      var matchingIndex = -1;
 
-      for(var pIndex = 0; pIndex < plainParts.length; pIndex++){
-        if(plainParts[pIndex].toLowerCase().indexOf(q) !== -1){
-          bodyMatch = true;
-          matchingBlock = parts[pIndex];
+      // Prefer a matching body block for the excerpt. A title-only match is
+      // still a valid result, but its excerpt should use the first body block
+      // when one exists rather than duplicating the title.
+      for(var pIndex = 1; pIndex < plainParts.length; pIndex++){
+        if(plainParts[pIndex].toLowerCase().indexOf(qLower) !== -1){
+          matchingIndex = pIndex;
           break;
         }
       }
 
-      if(searchableLower.indexOf(q) !== -1){
-        if(!matchingBlock && parts.length) matchingBlock = parts[0];
+      if(searchableLower.indexOf(qLower) !== -1){
+        // If the query spans blocks, identify the block containing the beginning
+        // of the global match instead of blindly falling back to block 0.
+        if(matchingIndex === -1){
+          var globalIndex = searchableLower.indexOf(qLower);
+          var cursor = 0;
+          for(var g = 0; g < plainParts.length; g++){
+            var nextCursor = cursor + plainParts[g].length;
+            if(globalIndex < nextCursor){
+              matchingIndex = g;
+              break;
+            }
+            cursor = nextCursor + 1;
+          }
+        }
+        if(matchingIndex === -1 && parts.length) matchingIndex = 0;
+
+        // For title-only matches, prefer the first actual body block if present.
+        if(matchingIndex === 0 && plainParts.length > 1 && !plainParts.slice(1).some(function(part){
+          return part.toLowerCase().indexOf(qLower) !== -1;
+        })){
+          matchingIndex = 1;
+        }
+
+        var matchingBlock = matchingIndex >= 0 ? parts[matchingIndex] : '';
         results.push({
           node: node,
           path: path,
           title: title,
           excerpt: matchingBlock || '',
-          titleMatch: titleMatch
+          titleMatch: titleMatch,
+          excerptIndex: matchingIndex
         });
       }
 
@@ -637,13 +783,15 @@
     });
   }
 
-  function getPathTitle(path){
-    var titles = [];
+  function getPathTitleHtml(path){
+    var parts = [];
     for(var len=1; len<=path.length; len++){
       var entry = flatIndex[pathToStr(path.slice(0, len))];
-      if(entry) titles.push(normalizeTitle(entry.node));
+      if(entry){
+        parts.push('<span class="search-path-part markdown-body">' + markdownDisplay(entry.node ? normalizeTitle(entry.node) : '') + '</span>');
+      }
     }
-    return titles.join(' › ');
+    return parts.join('<span class="search-path-sep">›</span>');
   }
 
   /* ===================== Sidebar rendering ===================== */
@@ -727,11 +875,17 @@
 
     if(parts.length){
       parts.forEach(function(part, index){
-        html += '<div class="markdown-body main-block main-block-' + index + '">' + markdownToHtml(part);
+        var rendered = markdownToHtml(part);
         if(index === 0){
-          html += ' <button class="link-btn title-link-btn" data-copylink="' + pathStr + '" title="Copy link to this section">🔗</button>';
+          var linkButton = '<button class="link-btn title-link-btn" data-copylink="' + pathStr + '" title="Copy link to this section">🔗</button>';
+          var headingClose = rendered.match(/<\/h[1-6]>/i);
+          if(headingClose){
+            rendered = rendered.replace(headingClose[0], linkButton + headingClose[0]);
+          }else{
+            rendered += linkButton;
+          }
         }
-        html += '</div>';
+        html += '<div class="markdown-body main-block main-block-' + index + '">' + rendered + '</div>';
       });
     }else{
       html += '<div class="markdown-body">(untitled)</div>';
@@ -747,7 +901,7 @@
         var childDesc = childParts.slice(1).join('\n\n');
         var childExcerpt = childDesc ? markdownToText(childDesc) : '';
         var grandChildren = children(k);
-        html += '<a class="section-card" href="#" data-select="' + pathToStr(childPath) + '">';
+        html += '<div class="section-card" data-select="' + pathToStr(childPath) + '" role="link" tabindex="0">';
         html += '<div class="section-card-title markdown-body">' + markdownDisplay(childTitle) + '</div>';
         if(childExcerpt){
           html += '<div class="section-card-desc markdown-body">' + markdownToHtml(childDesc) + '</div>';
@@ -755,7 +909,7 @@
         if(grandChildren.length){
           html += '<div class="section-card-meta">' + grandChildren.length + (grandChildren.length === 1 ? ' subsection' : ' subsections') + '</div>';
         }
-        html += '</a>';
+        html += '</div>';
       });
       html += '</div>';
     }
@@ -788,18 +942,18 @@
       var desc = descParts.join('\n\n');
       var excerpt = descParts.length ? markdownToText(desc) : '';
       var kidsCount = children(node).length;
-      html += '<a class="overview-card" href="#" data-select="' + pathStr + '">';
+      html += '<div class="overview-card" data-select="' + pathStr + '" role="link" tabindex="0">';
       html += '<div class="overview-card-title markdown-body">' + markdownDisplay(title) + '</div>';
       if(excerpt) html += '<div class="overview-card-desc markdown-body">' + markdownToHtml(desc) + '</div>';
       if(kidsCount) html += '<div class="overview-card-meta">' + kidsCount + (kidsCount === 1 ? ' subsection' : ' subsections') + '</div>';
-      html += '</a>';
+      html += '</div>';
     });
     html += '</div></div>';
     return html;
   }
 
   function renderSearchResults(){
-    var q = searchQuery.toLowerCase();
+    var q = searchQuery.replace(/\s+/g, ' ').trim().toLowerCase();
     var results = [];
     collectSearchResults(docsData, [], q, results);
 
@@ -822,13 +976,15 @@
     results.forEach(function(result){
       var pathStr = pathToStr(result.path);
       var excerpt = result.excerpt || '';
-      html += '<a class="search-result" href="#" data-select="' + pathStr + '">';
+      var excerptHtml = excerpt ? makeMarkdownExcerpt(excerpt, searchQuery, 280) : '';
+      excerptHtml = highlightHtml(excerptHtml);
+      html += '<div class="search-result" data-select="' + pathStr + '" role="link" tabindex="0">';
       html += '<div class="search-result-title markdown-body">' + markdownDisplayHighlighted(result.title) + '</div>';
-      html += '<div class="search-result-path">' + escapeHtml(getPathTitle(result.path)) + '</div>';
-      if(excerpt){
-        html += '<div class="search-result-excerpt markdown-body">' + markdownDisplayHighlighted(excerpt) + '</div>';
+      html += '<div class="search-result-path">' + getPathTitleHtml(result.path) + '</div>';
+      if(excerptHtml){
+        html += '<div class="search-result-excerpt markdown-body">' + excerptHtml + '</div>';
       }
-      html += '</a>';
+      html += '</div>';
     });
     html += '</div></div>';
 
@@ -961,6 +1117,16 @@
     selectPath(path);
   }
 
+  contentEl.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    var realLink = e.target.closest('a[href]');
+    if(realLink) return;
+    var sel = e.target.closest('[data-select][role=\"link\"]');
+    if(!sel) return;
+    e.preventDefault();
+    handleSelect(sel.getAttribute('data-select'));
+  });
+
   /* ===================== Mobile sidebar ===================== */
   function closeSidebarOnMobile(){
     if(window.innerWidth <= 768){
@@ -1052,6 +1218,10 @@
 
   /* ===================== Event delegation: content pane ===================== */
   contentEl.addEventListener('click', function(e){
+    var realLink = e.target.closest('a[href]');
+    if(realLink && !realLink.hasAttribute('data-select')){
+      return;
+    }
     var sel = e.target.closest('[data-select]');
     if(sel){
       e.preventDefault();
@@ -1265,53 +1435,20 @@
   before </body>) so that renderDocs / window.DocSite are already defined.
   You can also pass an already-parsed array: renderDocs(myArray)
 -->
-  <script>
-    renderDocs(`
-[
-    {
-        "main": [
-            "### 1. How to check the activty in Slay.one currently?",
-            "Use \`/current\` command to get every server activity. (matches, real player count, top players of each match, ranked search count)"
-        ]
-    },
-    {
-        "main": [
-            "### 2. How to see the chart of the peak activity of Slay.one?",
-            "Use \`/peak\` command to get peak activity chart of Slay.one, you can also modify a bit the chart based on your need."
-        ]
-    },
-    {
-        "main": [
-            "### 3. How to get notified when people are playing Slay.one?",
-            "Use \`/radio\` command to manage the switch of radio for you, radio can work in DMs or voice channel."
-        ]
-    },
-    {
-        "main": [
-            "### 4. How to get the recent replays of public Slay.one matches?",
-            "Use \`/replay\` command to view and get the recent replays of public games."
-        ]
-    },
-    {
-        "main": [
-            "### 5. How to see the ranking?",
-            "Use \`/ranking\` command to see all the rankings."
-        ]
-    },
-    {
-        "main": [
-            "### 6. How to see ranked player information(scores, ranks, recent logs etc)?",
-            "Use \`/playerrank\` to search and view ranked player information."
-        ]
-    },
-    {
-        "main": [
-            "### 5. How to see ranked clan information(scores, ranks, recent logs etc)?",
-            "Use \`playerrank\` to search and view ranked clan information."
-        ]
-    }
-]
-    `);
-  </script>
+<script>
+  fetch('./help.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to load help.json: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      renderDocs(data);
+    })
+    .catch(error => {
+      console.error('Failed to load documentation:', error);
+    });
+</script>
 </body>
 </html>

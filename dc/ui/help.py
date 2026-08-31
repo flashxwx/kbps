@@ -6,7 +6,7 @@ help_doc = []
 def load_help_doc():
     global help_doc
 
-    with open("dc/help.json", "r", encoding="utf-8") as file:
+    with open("docs/help.json", "r", encoding="utf-8") as file:
         help_doc = json.loads(file.read())
 
 class NagivationButton(ui.Button):
@@ -27,7 +27,21 @@ class BackToLastUIButton(ui.Button):
     async def callback(self, interaction: ui.Interaction):
         await interaction.response.defer()
         await interaction.edit_original_response(view=await self.last_ui_stuff[0](*self.last_ui_stuff[1]))
-    
+
+class BackButton(ui.Button):
+    def __init__(self, location: str = "1"):
+        self.location = location
+
+        super().__init__(label="Back")
+
+class HomeButton(ui.Button):
+    def __init__(self, location: str = "1"):
+        self.location = location
+
+        super().__init__(label="Home")
+
+    async def callback(self, interaction: ui.Interaction):
+        await interaction.response.defer()
 
 async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
     if location[0] == "p":
@@ -45,11 +59,19 @@ async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
     index = 1
     error_message = ""
 
-    top_buttons = ui.ActionRow(ui.Button(label="View on Website", url="https://flashxwx.github.io/kbps/"))
+    top_buttons = ui.ActionRow()
+    last_dash_sign_index = location.rfind("-")
+    if last_dash_sign_index > 0:
+        top_buttons.add_item(NagivationButton("1", "Home"))
+        top_buttons.add_item(NagivationButton(location[:last_dash_sign_index], "Back"))
     if last_ui_stuff:
         top_buttons.add_item(BackToLastUIButton(last_ui_stuff))
 
+    location_for_website = location if last_dash_sign_index == -1 else location[:last_dash_sign_index]
+
+    top_buttons.add_item(ui.Button(label="Read on Website", url=f"https://flashxwx.github.io/kbps/?doc={location_for_website}"))
     container.add_item(top_buttons)
+    container.add_item(ui.TextDisplay(f"-# Location Query Text: {location}"))
 
     for index_str in splited_location:
         if not index_str:
@@ -88,7 +110,7 @@ async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
             content += main_data + "\n"
 
         if data.get("more"):
-            container.add_item(ui.Section(content, accessory=NagivationButton(location+"-"+str(i))))
+            container.add_item(ui.Section(content, accessory=NagivationButton(str(index+1)+"-1")))
         else:
             container.add_item(ui.TextDisplay(content))
 
@@ -101,12 +123,18 @@ async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
         main_data = data["main"]
         if isinstance(main_data, list):
             for line in main_data:
-                content += line + "\n"
+                if no_newline := (line[-1:] == "\\"):
+                    line = line[:-1]
+
+                content += line
+
+                if not no_newline:
+                    content += "\n\n"
         else:
             content += main_data + "\n"
 
         if data.get("more"):
-            container.add_item(ui.Section(content, accessory=NagivationButton(location+"-"+str(i))))
+            container.add_item(ui.Section(content, accessory=NagivationButton(str(i+1)+"-1")))
         else:
             container.add_item(ui.TextDisplay(content))
 
