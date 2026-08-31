@@ -275,7 +275,7 @@ async def interact_with_slay_radio(
     stats_for_new_command_request(interaction)
 
 
-@command_tree.command(name="replay")
+@command_tree.command(name="replay", description="Get the recent replays of public matches.")
 @app_commands.describe(
     server="Server index name for replay filter, default is all.",
     mode="Mode index name for replay filter, default is all.",
