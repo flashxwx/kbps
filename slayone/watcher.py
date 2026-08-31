@@ -93,7 +93,7 @@ def create_watcher(socket: Socket, game_id: int, map_name: str, max_players: int
 
     connection.on_hp_update = on_hp_update
 
-    connection.on_round_end = on_game_round_end
+    connection.on_game_round_end = on_game_round_end
     connection.on_game_settlement_end = on_game_settlement_end
     
     watching_game_room_id_set.add(game_id)
