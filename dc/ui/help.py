@@ -67,7 +67,7 @@ async def build_help_ui(location: str = "1", last_ui_stuff: tuple = None):
     if last_ui_stuff:
         top_buttons.add_item(BackToLastUIButton(last_ui_stuff))
 
-    location_for_website = location if last_dash_sign_index == -1 else location[:last_dash_sign_index]
+    location_for_website = "" if last_dash_sign_index == -1 else location[:last_dash_sign_index]
 
     top_buttons.add_item(ui.Button(label="Read on Website", url=f"https://flashxwx.github.io/kbps/?doc={location_for_website}"))
     container.add_item(top_buttons)
