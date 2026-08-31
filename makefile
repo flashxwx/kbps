@@ -17,7 +17,7 @@ download-log:
 	admin@192.168.1.212:/home/admin/Desktop/Kbps/*.log \
 	./
 
-database-backup:
+backup:
 	sqlite3_rsync -v admin@192.168.1.212:/home/admin/Desktop/Kbps/database/users.sqlite.db database/.backup/users.sqlite.db
 	sqlite3_rsync -v admin@192.168.1.212:/home/admin/Desktop/Kbps/database/slay_peaks.sqlite.db database/.backup/slay_peaks.sqlite.db
 	sqlite3_rsync -v admin@192.168.1.212:/home/admin/Desktop/Kbps/database/slay_replay.sqlite.db database/.backup/slay_replay.sqlite.db

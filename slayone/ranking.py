@@ -249,7 +249,7 @@ def settle_match_ranking_for_a_clan(
 
     cached_clan =__clan_update_buffer.get(tag)
     if cached_clan:
-        clan = cached_clan[0]
+        clan = cached_clan
     else:
         try:
             clan_info: Info.Clan = slayone_scan_fastest_connection.request_from_outside(Request.ClanInfo(tag), "on_clan_info")

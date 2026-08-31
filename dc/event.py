@@ -1,4 +1,4 @@
-import traceback, os, time
+import traceback, os, time, sys
 
 import discord
 from discord import Message
@@ -42,6 +42,8 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 
 @bot.event
 async def on_error(event: str, *args, **kwargs):
+    # exc_type, _, _ = sys.exc_info()
+
     bot_logger.error(traceback.format_exc())
 
 @bot.event

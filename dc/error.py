@@ -5,7 +5,7 @@ from discord import Interaction
 from dc import ui, bot_logger
 
 async def handle_interaction_error(interaction: Interaction, error: Exception):
-    print(error.args)
+    #print(error.args)
     traceback_info = traceback.format_exc()
 
     layout_view = ui.build_a_message_ui(
