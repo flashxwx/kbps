@@ -392,7 +392,10 @@ async def build_slay_ranking_ui(info: SlayRankingUIInfo, current_page: int = 1):
         if len(dm_players) == 0:
             container.add_item(ui.TextDisplay("No ranking found."))
 
-    container.add_item(ui.TextDisplay("-# You can only view first 1000 players here at most. Use /playerrank command to see the rank of any specified player."))
+    if info.type_id == 2:
+        container.add_item(ui.TextDisplay("-# You can only view first 1000 clans here at most. Use /rankedclan command to see the rank of any specified clan."))
+    else:
+        container.add_item(ui.TextDisplay("-# You can only view first 1000 players here at most. Use /rankedplayer command to see the rank of any specified player."))
 
     layout_view = ui.MyLayoutView().add_item(container).add_item(
         ui.make_page_panel_container(ui.PagePanelInfo(build_slay_ranking_ui, info, max_page, current_page))
